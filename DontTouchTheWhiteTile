@@ -1,0 +1,296 @@
+package donttouchtheWhitetile;
+
+import java.awt.*;
+import java.awt.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.*;
+import javax.swing.Timer;
+
+
+public class DontTouchTheWhiteTile implements ActionListener, MouseListener
+{
+
+    public static DontTouchTheWhiteTile dttwt;
+    public final static int COLUMNS = 3, ROWS = 3, TILE_WIDTH = 250, TILE_HEIGHT = 300; 
+    public ArrayList<Tile> tiles;
+    public Renderer renderer;
+    public Random random;
+    public int score,milsecDelay;
+    public boolean gameOver;
+    public MusicPlayer mp;
+    public int hscore;
+    public String UserName;
+    BufferedReader br;
+    StringBuilder sb;
+    FileWriter writer;
+    File file;
+    public boolean isInMenu = true;
+
+    DontTouchTheWhiteTile()
+    {
+        UserName = JOptionPane.showInputDialog("Please Enter Your Name :  ");
+        file = new File("hscore.txt");
+        if(!file.exists())
+        {   
+            try
+            {
+                file.createNewFile();
+            }
+            catch(Exception e)
+            { }
+        }
+        try
+        {
+            br = new BufferedReader(new FileReader(file));
+            sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                line = br.readLine();
+            }
+            String everything = sb.toString();
+            hscore = Integer.parseInt(everything);
+            
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        
+        finally
+        {
+           try
+           {
+               if(br != null)
+               {
+                   br.close();
+               }
+           }
+           catch (Exception e)
+           {
+               e.printStackTrace();
+           }
+           
+        }
+       
+        
+        JFrame frame = new JFrame("Dont touch the white tile");
+        Timer timer = new Timer(20, this);         
+        
+        renderer = new Renderer();
+        random = new Random();
+        mp = new MusicPlayer();
+        
+        frame.setSize(TILE_WIDTH*COLUMNS, TILE_HEIGHT*ROWS);
+        frame.add(renderer);
+        frame.setVisible(true);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.addMouseListener(this);
+        frame.setResizable(false);
+
+        start();
+        timer.start();
+    }
+    public void play()
+    {
+        String filepath = "./resources/audio/tune.wav";
+        mp.StartMusic(filepath);
+    }
+    
+   
+    public void start()
+    {
+        score = 0;
+        gameOver = false;
+        
+        tiles = new ArrayList<Tile>();   
+        
+        for(int x = 0; x<COLUMNS; x++)
+        {    
+            for(int y = 0; y < ROWS; y++)
+            {
+                boolean canBeBlack = true;
+                for(Tile tile : tiles)
+                {
+                    if(tile.y == y &&  tile.black)
+                    {
+                        canBeBlack = false;
+                    }
+                    
+                }
+                if(!canBeBlack)
+                {
+                    tiles.add(new Tile(x,y,false));
+                }
+                else 
+                {
+                    tiles.add(new Tile(x,y,random.nextInt(3)==0 || x == 2));
+                }
+                
+            }
+        }
+        
+        play();
+    }
+     
+    public void actionPerformed(ActionEvent e)
+    {
+        renderer.repaint();
+        for(int i=0;i<tiles.size();++i)
+        {
+            Tile tile = tiles.get(i);
+            if(tile.animateY < 0)
+            {
+                tile.animateY += TILE_HEIGHT / 20;
+            }
+        }
+        milsecDelay++;
+        if(milsecDelay == 250)
+        {
+            gameOver = true;
+        }
+        
+    } 
+    
+    public void repaint(Graphics g)
+    {
+            g.setColor(Color.white);
+            g.fillRect(0,0,TILE_WIDTH*COLUMNS,TILE_HEIGHT*ROWS);
+            g.setColor(Color.DARK_GRAY);
+            g.fillRect(0,0,TILE_WIDTH*COLUMNS,TILE_HEIGHT*ROWS);
+            g.setFont(new Font("Arial",1,75));
+
+            if(!gameOver)
+            {
+                for(Tile tile : tiles) 
+                {
+                    g.setColor(tile.black ? Color.WHITE : Color.BLACK);
+                    g.fillRect(tile.x * TILE_WIDTH -4, tile.y *TILE_HEIGHT + tile.animateY -4, TILE_WIDTH -4, TILE_HEIGHT -4);
+           
+                    g.setColor(tile.black ? Color.BLACK : Color.WHITE);
+                    g.fillRect(tile.x * TILE_WIDTH -4, tile.y *TILE_HEIGHT + tile.animateY -4, TILE_WIDTH -4, TILE_HEIGHT -4);
+                }
+                g.setColor(Color.BLUE);
+                g.drawString(String.valueOf(score),300,150);
+                g.setFont(new Font("Arial",1,30));
+                g.drawString("highscore:" + String.valueOf(hscore),15,50);
+            }
+        
+            else
+            {
+                g.setColor(Color.RED);
+                g.drawString("GAME OVER!", 85, 500);
+                g.setColor(Color.BLUE);
+                g.drawString(UserName+"'s score: "+String.valueOf(score), 50, 100);
+                g.setColor(Color.PINK);
+                g.setFont(new Font("Arial",1,50));
+                if(score<=hscore)
+                    g.drawString("The high score is:"+ hscore,75,300);
+                g.setColor(Color.GREEN);
+                g.setFont(new Font("Arial",1,40));
+                g.drawString("DO YOU WANT TO TRY AGAIN?", 50,400);
+                if (score > hscore) {
+                    try {
+                        writer = new FileWriter("hscore.txt",Boolean.FALSE);
+                        writer.write(Integer.toString(score));
+                        }catch(Exception ex){ex.printStackTrace();}
+                    finally
+                    {   try
+                        {
+                        if(writer != null)
+                            writer.close();
+                        }catch(Exception e){       e.printStackTrace();        }
+                    }
+                    g.setColor(Color.BLUE);
+                    g.drawString("!!New High Score!!", 150, 600);
+                   }
+            }
+    }
+    
+    public static void main(String[] args) {
+            dttwt = new DontTouchTheWhiteTile();
+    }
+    
+    public void mousePressed(MouseEvent e)
+    {
+        boolean clicked = false;
+        if(!gameOver)
+        {
+            for(int i=0; i< tiles.size();i++)
+            {
+                Tile tile = tiles.get(i);
+                if(tile.pointInTile(e.getX(),e.getY()) && !clicked)
+                {
+                    if(e.getY() > TILE_HEIGHT * (ROWS - 1))
+                    {
+                        if(tile.black)
+                         {                                       
+                            for(int j = 0; j< tiles.size();j++)
+                            {
+                                if(tiles.get(j).y == ROWS)
+                                {
+                                    tiles.remove(j);
+                                }
+                                               
+                                tiles.get(j).y++;
+                                tiles.get(j).animateY -= TILE_HEIGHT;
+                            }
+                            
+                            score += Math.max(100 - milsecDelay,10);
+                            milsecDelay = 0;
+                            
+                            boolean canBeBlack = true; 
+                    
+                            for(int x = 0; x<COLUMNS; x++)
+                            {    
+                                boolean black = random.nextInt(4)==0 || x == COLUMNS -1;
+                                Tile newTile = null;
+                                if(canBeBlack && black)
+                                {
+                                    newTile = new Tile(x,0,true);
+                                    canBeBlack = false;
+                                }
+                                else
+                                {
+                                    newTile = new Tile(x,0,false);
+                                }
+                        
+                                newTile.animateY -= TILE_HEIGHT;
+                                tiles.add(newTile); 
+                            }                
+                        } 
+                        else
+                        {
+                            gameOver = true;
+                        }
+                        clicked = true;
+                    }
+                    else
+                    {
+                        gameOver = true;
+                    }
+                } 
+            }
+        }
+        else 
+        {
+            start();
+        }
+    }
+
+    public void mouseClicked(MouseEvent e) {
+        
+    }
+    public void mouseReleased(MouseEvent e)
+    {
+    
+    }
+    public void mouseEntered(MouseEvent e)
+    {
+    
+    }
+    public void mouseExited(MouseEvent e)
+    {
+    
+    }
+}
