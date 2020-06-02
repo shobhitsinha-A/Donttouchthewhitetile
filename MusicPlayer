@@ -1,0 +1,24 @@
+package donttouchtheWhitetile;
+import java.io.*;
+import javax.sound.sampled.*;
+import javax.swing.JOptionPane;
+public class MusicPlayer 
+{   void StartMusic(String musiclocation)
+    {
+    try
+    {    File musicPath = new File(musiclocation);
+         if(musicPath.exists())
+         {
+            AudioInputStream audioInput = AudioSystem.getAudioInputStream(musicPath);
+            Clip clip = AudioSystem.getClip();
+            clip.open(audioInput);
+            JOptionPane.showMessageDialog(null, "Press ANY key to begin");
+            clip.start();
+         }
+         else
+         {   System.out.println("Cant find file");   }
+    }
+    catch(Exception ex) {  ex.printStackTrace();  }
+    }
+}
+
