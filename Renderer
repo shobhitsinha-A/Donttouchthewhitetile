@@ -1,0 +1,16 @@
+package donttouchtheWhitetile;
+import java.awt.*;
+import javax.swing.*;
+
+public class Renderer extends JPanel
+{
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        
+        if(DontTouchTheWhiteTile.dttwt != null)
+        {
+            DontTouchTheWhiteTile.dttwt.repaint(g);
+        }
+    }
+}
