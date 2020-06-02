@@ -20,36 +20,15 @@ Java HotSpot(TM) 64-Bit Server VM (build 25.221-b11, mixed mode)
 Netbeans IDE 8.0.1
 
 
-CONTENTS
-==========
-
-This DontTouchTheWhiteTile zip contains:
-
-/ReadMe.pdf - this file
-/build folder - contains all the class files
-/nbproject - contains some xml documents and property source files
-/resorces - the file tune.wav containing the music
-/src - all the java files to execute the code
-/build.xml - a xml document
-/hscore.txt - a file that stores high score of the game
-/manifest.mf - pre-existing file of java
-
 
 COMPILING THE GAME
 ====================
-0. Open 'DontTouchTheWhiteTile' folder, another folder 'DontTouchTheWhiteTile' will be visible inside it of the type 
-'File Folder'.
 
-1. Copy this folder, go to the location where all the other NetBeans Projects are visible.
-eg:C:\Users\admin\Documents\NetBeansProjects
+1. Open NetBeans in your PC/Laptop.
 
-2. Paste the folder 'DontTouchTheWhiteTile' at this location where other NetBeans project are present.
+2. To open a project, on the left border an icon 'Projects' is visible. Click on the icon 'Projects.'
 
-3. Open NetBeans in your PC/Laptop.
-
-4. To open a project, on the left border an icon 'Projects' is visible. Click on the icon 'Projects.'
-
-5. Double click on "DontTouchTheWhiteTile->Source Packages->donttouchtheWhiteTile->
+3. Make a project in the following manner "DontTouchTheWhiteTile->Source Packages->donttouchtheWhiteTile->
 DontTouchTheWhiteTile.java".
 
 
