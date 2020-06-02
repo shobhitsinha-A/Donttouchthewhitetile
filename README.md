@@ -37,31 +37,19 @@ This DontTouchTheWhiteTile zip contains:
 
 COMPILING THE GAME
 ====================
-
-0. Copy the 'DontTouchTheWhiteTile.zip' folder on your Desktop.
-
-1. Open the 'DontTouchTheWhiteTile.zip' folder. You will see another folder 'DontTouchTheWhiteTile' above
-in the TaskBar press on "Extract all".
-
-2. OR simply from the Desktop right click on the 'DontTouchTheWhiteTile.zip' and press on "Extract All...".
-A text box will pop up asking for the path let the folder be extracted on the Desktop
-eg:C:\Users\admin\Desktop\DontTouchTheWhiteTile
-
-3. After extracting the folder a non-compressed folder will be visible with the name 'DontTouchTheWhiteTile'.
-
-4. Open this folder, another folder 'DontTouchTheWhiteTile' will be visible inside it of the type 
+0. Open 'DontTouchTheWhiteTile' folder, another folder 'DontTouchTheWhiteTile' will be visible inside it of the type 
 'File Folder'.
 
-5. Copy this folder, go to the location where all the other NetBeans Projects are visible.
+1. Copy this folder, go to the location where all the other NetBeans Projects are visible.
 eg:C:\Users\admin\Documents\NetBeansProjects
 
-6. Paste the folder 'DontTouchTheWhiteTile' at this location where other NetBeans project are present.
+2. Paste the folder 'DontTouchTheWhiteTile' at this location where other NetBeans project are present.
 
-7. Open NetBeans in your PC/Laptop.
+3. Open NetBeans in your PC/Laptop.
 
-8. To open a project, on the left border an icon 'Projects' is visible. Click on the icon 'Projects.'
+4. To open a project, on the left border an icon 'Projects' is visible. Click on the icon 'Projects.'
 
-9. Double click on "DontTouchTheWhiteTile->Source Packages->donttouchtheWhiteTile->
+5. Double click on "DontTouchTheWhiteTile->Source Packages->donttouchtheWhiteTile->
 DontTouchTheWhiteTile.java".
 
 
